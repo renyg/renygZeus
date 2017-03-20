@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="oracleGenerator" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"></plugin>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin>
+        <!-- Pagination -->
+        <!-- 取消注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!-- 配置连接数据信息 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://174.3.4.251:3306/zeus" userId="root"
+                        password="o9i8u7y6" />
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 配置自动生成的Model的保存路径与其它参数 -->
+        <javaModelGenerator targetPackage="com.shining3d.zeus.entity"
+                            targetProject="src/main/java">
+            <property name="enableSubPackages" value="false" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- 配置自动生成的Mappper.xml映射的保存路径与其它参数 -->
+        <sqlMapGenerator targetPackage="sqlmap"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 配置自动生成的Mappper.java接口的保存路径与其它参数 -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.shining3d.zeus.dao" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+
+        <!--<table tableName="3d_category"-->
+               <!--domainObjectName="Category" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table tableName="3d_product"-->
+               <!--domainObjectName="Product" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table tableName="3d_product_package_relation"-->
+               <!--domainObjectName="ProductPackageRelation" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table tableName="3d_prop"-->
+               <!--domainObjectName="Prop" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table tableName="3d_prop_value"-->
+               <!--domainObjectName="PropValue" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table tableName="3d_shopping_cart"-->
+               <!--domainObjectName="ShoppingCart" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+        <!--<table tableName="3d_sku"-->
+               <!--domainObjectName="Sku" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+
+        <!--<table tableName="3d_product_package_relation"-->
+               <!--domainObjectName="ProductPackageRelation" enableCountByExample="false"-->
+               <!--enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--</table>-->
+
+
+        <table tableName="3d_product"
+        domainObjectName="Product" enableCountByExample="false"
+        enableUpdateByExample="false" enableDeleteByExample="false"
+        enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+
+    </context>
+</generatorConfiguration>

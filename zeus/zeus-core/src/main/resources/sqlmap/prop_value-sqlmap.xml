@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.PropValueDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.entity.PropValueEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="prop_value_name" property="propValueName" jdbcType="VARCHAR"/>
+        <result column="prop_id" property="propId" jdbcType="BIGINT"/>
+        <result column="prop_name" property="propName" jdbcType="VARCHAR"/>
+        <result column="sort_no" property="sortNo" jdbcType="INTEGER"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, gmt_create, creator, gmt_modified, modifier, is_deleted, prop_value_name, prop_id, prop_name,
+        sort_no, comments
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_prop_value
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM 3d_prop_value
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.PropValueEntity">
+        INSERT INTO 3d_prop_value (id, gmt_create, creator,
+                                   gmt_modified, modifier, is_deleted,
+                                   prop_value_name, prop_id, prop_name,
+                                   sort_no, comments)
+        VALUES (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
+                                       #{gmtModified,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
+                                       #{isDeleted,jdbcType=CHAR},
+                                       #{propValueName,jdbcType=VARCHAR}, #{propId,jdbcType=BIGINT},
+                                       #{propName,jdbcType=VARCHAR},
+                                       #{sortNo,jdbcType=INTEGER}, #{comments,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.PropValueEntity">
+        insert into 3d_prop_value
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="propValueName != null">
+                prop_value_name,
+            </if>
+            <if test="propId != null">
+                prop_id,
+            </if>
+            <if test="propName != null">
+                prop_name,
+            </if>
+            <if test="sortNo != null">
+                sort_no,
+            </if>
+            <if test="comments != null">
+                comments,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="propValueName != null">
+                #{propValueName,jdbcType=VARCHAR},
+            </if>
+            <if test="propId != null">
+                #{propId,jdbcType=BIGINT},
+            </if>
+            <if test="propName != null">
+                #{propName,jdbcType=VARCHAR},
+            </if>
+            <if test="sortNo != null">
+                #{sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="comments != null">
+                #{comments,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.PropValueEntity">
+        update 3d_prop_value
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="propValueName != null">
+                prop_value_name = #{propValueName,jdbcType=VARCHAR},
+            </if>
+            <if test="propId != null">
+                prop_id = #{propId,jdbcType=BIGINT},
+            </if>
+            <if test="propName != null">
+                prop_name = #{propName,jdbcType=VARCHAR},
+            </if>
+            <if test="sortNo != null">
+                sort_no = #{sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="comments != null">
+                comments = #{comments,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.shining3d.zeus.entity.PropValueEntity">
+        UPDATE 3d_prop_value
+        SET gmt_create      = #{gmtCreate,jdbcType=TIMESTAMP},
+            creator         = #{creator,jdbcType=VARCHAR},
+            gmt_modified    = #{gmtModified,jdbcType=TIMESTAMP},
+            modifier        = #{modifier,jdbcType=VARCHAR},
+            is_deleted      = #{isDeleted,jdbcType=CHAR},
+            prop_value_name = #{propValueName,jdbcType=VARCHAR},
+            prop_id         = #{propId,jdbcType=BIGINT},
+            prop_name       = #{propName,jdbcType=VARCHAR},
+            sort_no         = #{sortNo,jdbcType=INTEGER},
+            comments        = #{comments,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="queryPropValueListByParam" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_prop_value
+        where prop_id = (select id from 3d_prop where category_id = #{categoryId,jdbcType=BIGINT} and prop_name =
+        #{propName,jdbcType=VARCHAR} and is_deleted = 'n')
+        and is_deleted = 'n'
+        order by sort_no desc
+    </select>
+
+    <insert id="batchSavePropValue" parameterType="com.shining3d.zeus.entity.PropValueEntity">
+        insert into 3d_prop_value (
+        gmt_create,
+        creator,
+        gmt_modified,
+        modifier,
+        is_deleted,
+        prop_value_name,
+        prop_id,
+        prop_name,
+        sort_no,
+        comments
+        )
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (#{item.gmtCreate,jdbcType=TIMESTAMP},
+            #{item.creator,jdbcType=VARCHAR},
+            #{item.gmtModified,jdbcType=TIMESTAMP},
+            #{item.modifier,jdbcType=VARCHAR},
+            #{item.isDeleted,jdbcType=CHAR},
+            #{item.propValueName,jdbcType=VARCHAR},
+            #{item.propId,jdbcType=BIGINT},
+            #{item.propName,jdbcType=VARCHAR},
+            #{item.sortNo,jdbcType=INTEGER},
+            #{item.comments,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="queryByPropValueName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_prop_value
+        where prop_value_name = #{propValueName,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

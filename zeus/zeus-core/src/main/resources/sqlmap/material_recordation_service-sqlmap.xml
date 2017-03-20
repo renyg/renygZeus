@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.MaterialRecordationServiceDao">
+
+
+    <insert id="batchInsert" parameterType="com.shining3d.zeus.client.dto.MaterialRecordationServiceDto">
+        insert into
+        3d_material_recordation_service(gmt_create,creator,gmt_modified,modifier,user_id,record_material_name,record_material_id,material_classify_id,
+        precisions,precisions_degree,status)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            now(),
+            #{item.userId},
+            now(),
+            #{item.userId},
+            #{item.userId},
+            #{item.recordMaterialName},
+            #{item.recordMaterialId},
+            #{item.materialClassifyId},
+            #{item.precisions},
+            #{item.precisionsDegree},
+            #{item.status}
+            )
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="com.shining3d.zeus.client.dto.MaterialRecordationServiceDto">
+            update 3d_material_recordation_service
+            <set>
+                gmt_modified = now(),
+                <if test="dto.userId != null">
+                    modifier = #{dto.userId},
+                </if>
+                <if test="dto.materialClassifyId != null">
+                    material_classify_id = #{dto.materialClassifyId},
+                </if>
+                <if test="dto.recordMaterialName != null">
+                    record_material_Name = #{dto.recordMaterialName},
+                </if>
+                <if test="dto.logistics != null">
+                    logistics = #{dto.logistics},
+                </if>
+                <if test="dto.logisticsCompany != null">
+                    logistics_company = #{dto.logisticsCompany},
+                </if>
+                <if test="dto.precisions != null">
+                    precisions = #{dto.precisions},
+                </if>
+                <if test="dto.precisionsDegree != null">
+                    precisions_degree = #{dto.precisionsDegree},
+                </if>
+                <if test="dto.status != null">
+                    status = #{dto.status},
+                </if>
+                <if test="dto.auditDfsId != null">
+                    audit_dfs_Id = #{dto.auditDfsId},
+                </if>
+                <if test="dto.reason != null">
+                    reason = #{dto.reason},
+                </if>
+            </set>
+            where is_deleted = 'n'
+            <if test="dto.userId != null">
+                and user_id = #{dto.userId}
+            </if>
+            <if test="dto.recordMaterialId != null">
+                and record_material_id = #{dto.recordMaterialId}
+            </if>
+    </update>
+    <!--一个材料ID有可能对应多条记录，所以需要根据材料的ID+用户的ID来解决，一次删除多条记录-->
+    <update id="deleteById" parameterType="com.shining3d.zeus.client.dto.MaterialRecordationServiceDto">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 3d_material_recordation_service
+            set is_deleted = 'y'
+            where is_deleted = 'n'
+            <if test="item.userId != null">
+                and user_id = #{item.userId}
+            </if>
+            <if test="item.recordMaterialId != null">
+                and record_material_id = #{item.recordMaterialId}
+            </if>
+            <if test="item.status != null">
+                 and status != #{item.status}
+            </if>
+        </foreach>
+    </update>
+
+    <select id="getCountMaterialRecordationCondition" resultType="int">
+        select count(*) from (
+            select
+            a.id,
+            a.user_id,
+            a.record_material_id,
+            a.record_material_name,
+            a.material_classify_id,
+            a.logistics,
+            a.logistics_company,
+            a.status,
+            a.audit_dfs_Id,
+            group_concat( distinct a.precisions_degree ,":", a.precisions) as precisions,
+            a.gmt_create,
+            b.dfs_id,
+            b.file_name
+            from 3d_material_recordation_service a,3d_material b
+            where a.is_deleted = 'n'
+            and a.record_material_id = b.id
+            <if test="materialRecordationServiceDto.userId != null">
+                and a.user_id = #{materialRecordationServiceDto.userId}
+            </if>
+            <if test="materialRecordationServiceDto.status != null">
+                and a.status = #{materialRecordationServiceDto.status}
+            </if>
+            <if test="materialRecordationServiceDto.recordMaterialId != null">
+                and a.record_material_id = #{materialRecordationServiceDto.recordMaterialId}
+            </if>
+            <if test="materialRecordationServiceDto.precisions != null">
+                and a.precisions = #{materialRecordationServiceDto.precisions}
+            </if>
+            <if test="materialRecordationServiceDto.gmtCreateStart != null">
+                and a.gmt_create &gt;= #{materialRecordationServiceDto.gmtCreateStart}
+            </if>
+            <if test="materialRecordationServiceDto.gmtCreateEnd != null">
+                and a.gmt_create &lt;= #{materialRecordationServiceDto.gmtCreateEnd}
+            </if>
+            <if test="materialRecordationServiceDto.logistics != null">
+                and logistics = #{materialRecordationServiceDto.logistics}
+            </if>
+            group by a.user_id,a.record_material_id
+        ) b
+    </select>
+
+
+    <select id="getMaterialRecordationCondition"
+            resultType="com.shining3d.zeus.client.dto.MaterialRecordationServiceDto">
+        select
+        a.id,
+        a.user_id,
+        a.record_material_id,
+        a.record_material_name,
+        a.material_classify_id,
+        a.logistics,
+        a.logistics_company,
+        a.status,
+        a.audit_dfs_Id,
+        group_concat( distinct a.precisions_degree ,":", a.precisions) as precisions,
+        a.gmt_create,
+        b.dfs_id,
+        b.file_name
+        from 3d_material_recordation_service a,3d_material b
+        where a.is_deleted = 'n'
+        and a.record_material_id = b.id
+        <if test="materialRecordationServiceDto.userId != null">
+            and a.user_id = #{materialRecordationServiceDto.userId}
+        </if>
+        <if test="materialRecordationServiceDto.status != null">
+            and a.status = #{materialRecordationServiceDto.status}
+        </if>
+        <if test="materialRecordationServiceDto.recordMaterialId != null">
+            and a.record_material_id = #{materialRecordationServiceDto.recordMaterialId}
+        </if>
+        <if test="materialRecordationServiceDto.precisions != null">
+            and a.precisions = #{materialRecordationServiceDto.precisions}
+        </if>
+        <if test="materialRecordationServiceDto.gmtCreateStart != null">
+            and a.gmt_create &gt;= #{materialRecordationServiceDto.gmtCreateStart}
+        </if>
+        <if test="materialRecordationServiceDto.gmtCreateEnd != null">
+            and a.gmt_create &lt;= #{materialRecordationServiceDto.gmtCreateEnd}
+        </if>
+        <if test="materialRecordationServiceDto.logistics != null">
+            and logistics = #{materialRecordationServiceDto.logistics}
+        </if>
+        group by a.user_id,a.record_material_id
+        <include refid="SHINING3D_COMMON.SHINING3D_ORDER"/>
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING"/>
+    </select>
+
+    <select id="countPermissionMaterialAttachment" resultType="java.lang.Integer"
+            parameterType="com.shining3d.zeus.client.dto.query.MaterialAttachmentQueryDto">
+        select count(mrs.id)
+        from 3d_material_recordation_service mrs
+          left join 3d_material m on mrs.record_material_id = m.id
+        where mrs.user_id = #{userId} and m.dfs_id = #{dfsId} and mrs.is_deleted = 'n'  and m.is_deleted = 'n'
+    </select>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.MaterialPrecisionDao">
+    <insert id="batchInset" parameterType="com.shining3d.zeus.entity.MaterialPrecisionEntity">
+        insert into 3d_material_precision(gmt_create,creator,gmt_modified,modifier,object_id,precisions,precisions_name,
+        precisions_ratio)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            now(),
+            'sys',
+            now(),
+            'sys',
+            #{item.objectId},
+            #{item.precisions},
+            #{item.precisionsName},
+            #{item.precisionsRatio}
+            )
+        </foreach>
+    </insert>
+
+
+    <insert id="inset" parameterType="com.shining3d.zeus.entity.MaterialPrecisionEntity">
+        INSERT INTO 3d_material_precision (gmt_create, creator, gmt_modified, modifier, object_id, precisions, precisions_name,
+                                           precisions_ratio)
+        VALUES
+            (
+                now(),
+                'sys',
+                now(),
+                'sys',
+                #{objectId},
+                #{precisions},
+                #{precisionsName},
+                #{precisionsRatio}
+            )
+    </insert>
+
+    <update id="update" parameterType="com.shining3d.zeus.entity.MaterialPrecisionEntity">
+        update 3d_material_precision
+        <set>
+            gmt_modified = now(),
+            precisions = #{precisions},
+            precisions_name = #{precisionsName},
+            precisions_ratio = #{precisionsRatio}
+        </set>
+        where object_id = #{objectId} and is_deleted = 'n' and id = #{id}
+    </update>
+
+
+    <update id="batchUpdate" parameterType="com.shining3d.zeus.entity.MaterialPrecisionEntity">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update 3d_material_precision
+            <set>
+                gmt_modified = now(),
+                precisions = #{item.precisions},
+                precisions_name = #{item.precisionsName},
+                precisions_ratio = #{item.precisionsRatio}
+            </set>
+            where object_id = #{item.objectId} and is_deleted = 'n' and id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="deleteByObjectId">
+        UPDATE 3d_material_precision
+        SET is_deleted = 'y'
+        WHERE object_id = #{id} AND is_deleted = 'n'
+    </update>
+
+    <update id="deleteByObjectIds">
+        update 3d_material_precision set is_deleted = 'y'
+        where is_deleted = 'n' and object_id in
+        <foreach collection="ids" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <!--提供给添加材料备案列表-->
+    <select id="getPrecisionByClassifyIdAndNameEn" resultType="com.shining3d.zeus.client.dto.MaterialPrecisionDto">
+        select * from `3d_material_precision` where id in
+        (select distinct d1.precision_id from `3d_material` d,`3d_model_material_relation` d1
+        where d.is_deleted = 'n' and d1.is_deleted = 'n'
+        and d.id = d1.marterial_id
+        <if test="classifyId != null">
+            and d.classify_id = #{classifyId}
+        </if>
+        <if test="nameEn != null">
+            and d.name_en = #{nameEn}
+        </if>
+        )
+    </select>
+
+    <select id="getPrecisionByCondition" resultType="com.shining3d.zeus.client.dto.MaterialPrecisionDto">
+        select * from `3d_material_precision` d where is_deleted = 'n'
+        <if test="objectId != null">
+            and object_id = #{objectId}
+        </if>
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="precisions != null">
+            and precisions = #{precisions}
+        </if>
+    </select>
+</mapper>

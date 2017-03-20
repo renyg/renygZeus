@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        ">
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="zeus" owner="fe"/>
+    <!-- 使用zookeeper注册中心暴露服务地址 -->
+    <dubbo:registry protocol="zookeeper" address="${zookeeper.address}"/>
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="${dubbo.port}"/>
+    <dubbo:protocol name="jsonrpc" port="${jsonrpc.port}"/>
+    <dubbo:monitor protocol="registry"/>
+    <dubbo:provider filter="zeusFilter"/>
+
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.shining3d.zeus.client.SupplierPrinterServiceApiService" ref="supplierPrinterService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.DeviceModelSaleApiService" ref="deviceModelService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.DeviceSupplierApiService" ref="deviceSupplierService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.MaterialApiService" ref="materialService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.MaterialRecordationServiceApiService"
+                   ref="materialRecordationService" version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.ProductApiService" ref="productService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.ShoppingCartApiService" ref="shoppingCartService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.SkuApiService" ref="skuService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.PropValueApiService" ref="propValueService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.PropApiService" ref="propService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.CategoryApiService" ref="categoryService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+    <dubbo:service interface="com.shining3d.zeus.client.MaterialAttachmentApiService" ref="materialAttachmentService"
+                   version="${dubbo.zeus.appname}_${dubbo.env}_${dubbo.version}"/>
+
+</beans>

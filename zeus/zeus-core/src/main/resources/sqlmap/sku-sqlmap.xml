@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.SkuDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.entity.SkuEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="product_id" property="productId" jdbcType="BIGINT"/>
+        <result column="prop_key" property="propKey" jdbcType="VARCHAR"/>
+        <result column="prop_name" property="propName" jdbcType="VARCHAR"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="unit" property="unit" jdbcType="VARCHAR"/>
+        <result column="unit_num" property="unitNum" jdbcType="NUMERIC"/>
+        <result column="original_price" property="originalPrice" jdbcType="DECIMAL"/>
+        <result column="promotion_price" property="promotionPrice" jdbcType="DECIMAL"/>
+        <result column="promotion_start_time" property="promotionStartTime" jdbcType="TIMESTAMP"/>
+        <result column="promotion_end_time" property="promotionEndTime" jdbcType="TIMESTAMP"/>
+        <result column="can_use_coupon" property="canUseCoupon" jdbcType="CHAR"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, gmt_create, creator, gmt_modified, modifier, is_deleted, product_id, prop_key,
+        prop_name, quantity, unit, unit_num, original_price, promotion_price, promotion_start_time,
+        promotion_end_time, can_use_coupon, comments
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_sku
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM 3d_sku
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.shining3d.zeus.entity.SkuEntity">
+        INSERT INTO 3d_sku (id, gmt_create, creator,
+                            gmt_modified, modifier, is_deleted,
+                            product_id, prop_key, prop_name,
+                            quantity, unit, unit_num,
+                            original_price, promotion_price, promotion_start_time,
+                            promotion_end_time, can_use_coupon, comments
+        )
+        VALUES (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
+                                       #{gmtModified,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
+                                       #{isDeleted,jdbcType=CHAR},
+                                       #{productId,jdbcType=BIGINT}, #{propKey,jdbcType=VARCHAR},
+                                       #{propName,jdbcType=VARCHAR},
+                                       #{quantity,jdbcType=INTEGER}, #{unit,jdbcType=VARCHAR},
+                #{unitNum,jdbcType=NUMERIC},
+                #{originalPrice,jdbcType=DECIMAL}, #{promotionPrice,jdbcType=DECIMAL},
+                #{promotionStartTime,jdbcType=TIMESTAMP},
+                #{promotionEndTime,jdbcType=TIMESTAMP}, #{canUseCoupon,jdbcType=CHAR}, #{comments,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.shining3d.zeus.entity.SkuEntity">
+        insert into 3d_sku
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="propKey != null">
+                prop_key,
+            </if>
+            <if test="propName != null">
+                prop_name,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+            <if test="unitNum != null">
+                unit_num,
+            </if>
+            <if test="originalPrice != null">
+                original_price,
+            </if>
+            <if test="promotionPrice != null">
+                promotion_price,
+            </if>
+            <if test="promotionStartTime != null">
+                promotion_start_time,
+            </if>
+            <if test="promotionEndTime != null">
+                promotion_end_time,
+            </if>
+            <if test="canUseCoupon != null">
+                can_use_coupon,
+            </if>
+            <if test="comments != null">
+                comments,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="propKey != null">
+                #{propKey,jdbcType=VARCHAR},
+            </if>
+            <if test="propName != null">
+                #{propName,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="unitNum != null">
+                #{unitNum,jdbcType=NUMERIC},
+            </if>
+            <if test="originalPrice != null">
+                #{originalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="promotionPrice != null">
+                #{promotionPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="promotionStartTime != null">
+                #{promotionStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="promotionEndTime != null">
+                #{promotionEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="canUseCoupon != null">
+                #{canUseCoupon,jdbcType=CHAR},
+            </if>
+            <if test="comments != null">
+                #{comments,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.SkuEntity">
+        update 3d_sku
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId,jdbcType=BIGINT},
+            </if>
+            <if test="propKey != null">
+                prop_key = #{propKey,jdbcType=VARCHAR},
+            </if>
+            <if test="propName != null">
+                prop_name = #{propName,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                quantity = #{quantity,jdbcType=INTEGER},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="unitNum != null">
+                unit_num = #{unitNum,jdbcType=NUMERIC},
+            </if>
+            <if test="originalPrice != null">
+                original_price = #{originalPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="promotionPrice != null">
+                promotion_price = #{promotionPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="promotionStartTime != null">
+                promotion_start_time = #{promotionStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="promotionEndTime != null">
+                promotion_end_time = #{promotionEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="canUseCoupon != null">
+                can_use_coupon = #{canUseCoupon,jdbcType=CHAR},
+            </if>
+            <if test="comments != null">
+                comments = #{comments,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.shining3d.zeus.entity.SkuEntity">
+        UPDATE 3d_sku
+        SET
+            gmt_modified         = #{gmtModified,jdbcType=TIMESTAMP},
+            is_deleted           = #{isDeleted,jdbcType=CHAR},
+            product_id           = #{productId,jdbcType=BIGINT},
+            prop_key             = #{propKey,jdbcType=VARCHAR},
+            prop_name            = #{propName,jdbcType=VARCHAR},
+            quantity             = #{quantity,jdbcType=INTEGER},
+            unit                 = #{unit,jdbcType=VARCHAR},
+            unit_num             = #{unitNum,jdbcType=NUMERIC},
+            original_price       = #{originalPrice,jdbcType=DECIMAL},
+            promotion_price      = #{promotionPrice,jdbcType=DECIMAL},
+            promotion_start_time = #{promotionStartTime,jdbcType=TIMESTAMP},
+            promotion_end_time   = #{promotionEndTime,jdbcType=TIMESTAMP},
+            can_use_coupon       = #{canUseCoupon,jdbcType=CHAR},
+            comments             = #{comments,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="batchSaveSku" parameterType="com.shining3d.zeus.entity.SkuEntity">
+        insert into 3d_sku (gmt_create, creator,
+        gmt_modified, modifier, is_deleted,
+        product_id, prop_key, prop_name,
+        quantity, unit, unit_num,
+        original_price, promotion_price, promotion_start_time,
+        promotion_end_time, can_use_coupon, comments
+        )
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (#{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.creator,jdbcType=VARCHAR},
+            #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.modifier,jdbcType=VARCHAR}, #{item.isDeleted,jdbcType=CHAR},
+            #{item.productId,jdbcType=BIGINT}, #{item.propKey,jdbcType=VARCHAR}, #{item.propName,jdbcType=VARCHAR},
+            #{item.quantity,jdbcType=INTEGER}, #{item.unit,jdbcType=VARCHAR}, #{item.unitNum,jdbcType=NUMERIC},
+            #{item.originalPrice,jdbcType=DECIMAL}, #{item.promotionPrice,jdbcType=DECIMAL},
+            #{item.promotionStartTime,jdbcType=TIMESTAMP},
+            #{item.promotionEndTime,jdbcType=TIMESTAMP}, #{item.canUseCoupon,jdbcType=CHAR},
+            #{item.comments,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <select id="querySkuListByProductId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_sku
+        where is_deleted = 'n' and product_id = #{productId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="removeSkuByProductId" parameterType="java.lang.Long">
+        DELETE FROM 3d_sku
+        WHERE product_id = #{productId,jdbcType=BIGINT}
+    </delete>
+
+
+    <select id="queryBySkuIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_sku
+        where id in
+               <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                   #{item}
+               </foreach>
+    </select>
+
+    <select id="queryByProductIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_sku
+        where product_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+
+
+
+</mapper>

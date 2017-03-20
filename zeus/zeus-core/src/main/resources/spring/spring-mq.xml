@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">
+
+    <!-- 消息队列通用配置 -->
+    <bean id="mqMessageConverter" class="org.springframework.amqp.support.converter.SimpleMessageConverter"></bean>
+    <rabbit:connection-factory id="rabbitConnectionFactory" host="${rabbit.host}" virtual-host="zeus"
+                               username="${rabbit.username}" password="${rabbit.password}" port="${rabbit.port}"/>
+
+
+    <rabbit:admin id="rabbitAdmin" connection-factory="rabbitConnectionFactory"/>
+    <rabbit:template id="amqpTemplate" message-converter="mqMessageConverter"
+                     connection-factory="rabbitConnectionFactory"></rabbit:template>
+
+    <!--待处理商品队列-->
+    <rabbit:queue id="productStateDlxQueue" auto-delete="false" name="${zeus.rabbit.queue.productStateModifyDlxQueue}" durable="true"
+                  exclusive="false">
+        <rabbit:queue-arguments>
+            <entry key="x-dead-letter-exchange" value="${zeus.rabbit.directexchange}"/>
+            <entry key="x-dead-letter-routing-key" value="${zeus.rabbit.route.productStateModifyRouteKey}"/>
+        </rabbit:queue-arguments>
+    </rabbit:queue>
+
+
+    <rabbit:direct-exchange name="${zeus.rabbit.directexchange}" durable="true">
+        <rabbit:bindings>
+            <rabbit:binding key="${zeus.rabbit.route.productStateModifyDlxRouteKey}" queue="productStateDlxQueue"></rabbit:binding>
+            <rabbit:binding key="${zeus.rabbit.route.productStateModifyRouteKey}" queue="productStateQueue"></rabbit:binding>
+        </rabbit:bindings>
+    </rabbit:direct-exchange>
+
+
+    <!--product自动上下架队列-->
+    <rabbit:queue id="productStateQueue" auto-delete="false" name="${zeus.rabbit.queue.productStateModifyQueue}" durable="true"
+                  exclusive="false"></rabbit:queue>
+
+
+    <rabbit:listener-container connection-factory="rabbitConnectionFactory" message-converter="mqMessageConverter" acknowledge="manual">
+        <rabbit:listener ref="productStateModifyListener" queues="productStateQueue"/>
+    </rabbit:listener-container>
+
+</beans>

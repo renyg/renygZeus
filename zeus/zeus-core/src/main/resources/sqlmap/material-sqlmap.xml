@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.MaterialDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.client.dto.MaterialDto">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="cId" property="classifyId" jdbcType="VARCHAR"/>
+        <collection property="list" column="classifyId" ofType="com.shining3d.zeus.client.dto.ResultMaterialDto">
+            <id column="classifyId" property="classifyId" jdbcType="BIGINT" />
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+            <result column="nameEn" property="nameEn" jdbcType="VARCHAR"/>
+            <result column="price" property="price" jdbcType="DECIMAL"/>
+            <result column="startingPrice" property="startingPrice" jdbcType="DECIMAL"/>
+            <result column="materialId" property="materialId" jdbcType="BIGINT"/>
+            <result column="color" property="color" jdbcType="VARCHAR"/>
+            <result column="classifyId" property="classifyId" jdbcType="VARCHAR"/>
+            <result column="profile" property="profile" jdbcType="VARCHAR"/>
+            <result column="schedule" property="schedule" jdbcType="VARCHAR"/>
+            <result column="density" property="density" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="materialResultMap" type="com.shining3d.zeus.client.dto.MaterialDto">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="VARCHAR" />
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+        <result column="modifier" property="modifier" jdbcType="VARCHAR" />
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR" />
+        <result column="classify_id" property="classifyId" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="name_en" property="nameEn" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="starting_price" property="startingPrice" jdbcType="DECIMAL" />
+        <result column="density" property="density" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP" />
+        <result column="schedule" property="schedule" jdbcType="VARCHAR" />
+        <result column="color" property="color" jdbcType="VARCHAR" />
+        <result column="use_coupon" property="useCoupon" jdbcType="CHAR" />
+        <result column="profile" property="profile" jdbcType="VARCHAR" />
+        <result column="detail" property="detail" jdbcType="VARCHAR" />
+        <result column="dfs_id" property="dfsId" jdbcType="VARCHAR" />
+        <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+        <collection property="pricisionList" column="object_id" ofType="com.shining3d.zeus.client.dto.MaterialPrecisionDto">
+            <result column="precisionsId" property="precisionsId" jdbcType="BIGINT"/>
+            <result column="object_id" property="objectId" jdbcType="BIGINT"/>
+            <result column="precisions" property="precisions" jdbcType="VARCHAR"/>
+            <result column="precisions_name" property="precisionsName" jdbcType="VARCHAR"/>
+            <result column="precisions_ratio" property="precisionsRatio" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectByNameCn" resultType="com.shining3d.zeus.client.dto.MaterialDto" parameterType="java.lang.String">
+        SELECT *
+        FROM 3d_material
+        WHERE is_deleted = 'n' AND name_en = #{nameEn}
+    </select>
+
+    <update id="deleteByPK">
+        update 3d_material set is_deleted = 'y' where is_deleted = 'n'
+        and id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+        </foreach>
+    </update>
+
+
+    <update id="batchOperateStatus">
+        update 3d_material set status = #{status} where is_deleted = 'n'
+        and id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.MaterialEntity">
+        insert into 3d_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="classifyId != null">
+                classify_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="nameEn != null">
+                name_en,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="startingPrice != null">
+                starting_price,
+            </if>
+            <if test="density != null">
+                density,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="schedule != null">
+                schedule,
+            </if>
+            <if test="color != null">
+                color,
+            </if>
+            <if test="useCoupon != null">
+                use_coupon,
+            </if>
+            <if test="profile != null">
+                profile,
+            </if>
+            <if test="detail != null">
+                detail,
+            </if>
+            <if test="dfsId != null">
+                dfs_id,
+            </if>
+            <if test="fileName!= null">
+                file_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="classifyId != null">
+                #{classifyId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=BIGINT},
+            </if>
+            <if test="startingPrice != null">
+                #{startingPrice,jdbcType=BIGINT},
+            </if>
+            <if test="density != null">
+                #{density,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="schedule != null">
+                #{schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="color != null">
+                #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="useCoupon != null">
+                #{useCoupon,jdbcType=CHAR},
+            </if>
+            <if test="profile != null">
+                #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="dfsId != null">
+                #{dfsId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName!= null">
+                #{fileName},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.MaterialEntity">
+        update 3d_material
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="classifyId != null">
+                classify_id = #{classifyId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="nameEn != null">
+                name_en = #{nameEn,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=BIGINT},
+            </if>
+            <if test="startingPrice != null">
+                starting_price = #{startingPrice,jdbcType=BIGINT},
+            </if>
+            <if test="density != null">
+                density = #{density,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="schedule != null">
+                schedule = #{schedule,jdbcType=VARCHAR},
+            </if>
+            <if test="color != null">
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="useCoupon != null">
+                use_coupon = #{useCoupon,jdbcType=CHAR},
+            </if>
+            <if test="profile != null">
+                profile = #{profile,jdbcType=VARCHAR},
+            </if>
+            <if test="detail != null">
+                detail = #{detail,jdbcType=VARCHAR},
+            </if>
+            <if test="dfsId != null">
+                dfs_id =  #{dfsId,jdbcType=VARCHAR},
+            </if>
+            <if test="fileName!= null">
+                file_name =  #{fileName}
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <select id="getCount" resultType="int">
+        select count(*) from (
+            select a.* from 3d_material a left join 3d_material_precision b on(a.is_deleted = 'n' and b.is_deleted = 'n' and a.id = b.object_id)
+            where a.is_deleted = 'n'
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="name != null">
+                and a.name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="classifyId != null">
+                and a.classify_id = #{classifyId}
+            </if>
+            <if test="id != null">
+                and a.id = #{id}
+            </if>
+            <if test="precisions != null">
+                and b.precisions = #{precisions}
+            </if>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+          GROUP BY a.id
+        ) m
+
+    </select>
+
+
+    <select id="selectByConditions" resultMap="materialResultMap">
+        select a.*,
+        b.object_id,
+        b.precisions,
+        b.precisions_name,
+        b.precisions_ratio,
+        b.id as precisionsId
+        from 3d_material a LEFT JOIN 3d_material_precision b
+        on(a.is_deleted = 'n' and b.is_deleted = 'n' and a.id = b.object_id)
+        where a.is_deleted = 'n'
+        <if test="materialDto.status != null">
+            and a.status = #{materialDto.status}
+        </if>
+        <if test="materialDto.name != null">
+            and a.name like CONCAT('%',#{materialDto.name},'%')
+        </if>
+        <if test="materialDto.classifyId != null">
+            and a.classify_id = #{materialDto.classifyId}
+        </if>
+        <if test="materialDto.id != null">
+            and a.id = #{materialDto.id}
+        </if>
+        <if test="materialDto.precisions != null">
+            and b.precisions = #{materialDto.precisions}
+        </if>
+        <include refid="SHINING3D_COMMON.SHINING3D_ORDER"/>
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING"/>
+    </select>
+
+
+    <select id="getListByCondition" resultType="com.shining3d.zeus.client.dto.MaterialDto">
+        select * from 3d_material
+        where is_deleted = 'n'
+        <if test="materialDto.status != null">
+            and status = #{materialDto.status}
+        </if>
+        <if test="materialDto.nameEn != null">
+            and name_en like CONCAT('%',#{materialDto.nameEn},'%')
+        </if>
+        <if test="materialDto.classifyId != null">
+            and classify_id = #{materialDto.classifyId}
+        </if>
+    </select>
+
+    <!--提供给订单下单页面使用-->
+    <select id="getCanOrderMaterialByCondition" resultMap="BaseResultMap">
+        select
+       3m.name as name ,
+       3m.name_en as nameEn,
+       3m.price as price,
+       3m.starting_price  as startingPrice,
+       3m.id as materialId,
+       3m.id,
+       3m.color as color,
+       3m.classify_id  as classifyId,
+       3m.classify_id as cId,
+       3m.profile as profile,
+       3m.schedule as schedule,
+       3m.density as density
+        from
+        (select * from 3d_material where is_deleted = 'n'and
+        id in
+        (
+        select adapter_material_id
+        from 3d_supplier_printer_service where is_deleted = 'n' and status = 'pass'
+        and device_model_id in (
+        select id FROM 3d_device_model
+        where is_deleted = 'n' and status = 'enable'
+        and build_size_real_y &gt;= #{buildSizeRealY}
+        and build_size_real_x &gt;= #{buildSizeRealX}
+        and build_size_real_z &gt;= #{buildSizeRealZ}
+        and id not in
+            (
+            select id from 3d_device_model
+            where build_size_real_x = #{buildSizeRealX} and build_size_real_y = #{buildSizeRealY}
+            and build_size_real_z = #{buildSizeRealZ} and is_deleted = 'n'
+            )
+        )
+        )
+        )3m where 3m.is_deleted = 'n'
+    </select>
+
+    <!--批量查询材料信息-->
+    <select id="batchSelectByIds" resultType="com.shining3d.zeus.client.dto.MaterialDto">
+        select * from 3d_material a
+        where a.is_deleted = 'n' and a.status = 'enable' and a.id in
+        <foreach collection="ids" item="item" index="index"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

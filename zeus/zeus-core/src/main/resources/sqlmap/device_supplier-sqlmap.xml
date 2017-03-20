@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.DeviceSupplierDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.client.dto.DeviceSupplierDto">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, gmt_create, creator, gmt_modified, modifier, is_deleted, name
+  </sql>
+
+    <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from 3d_device_supplier
+        where is_deleted = 'n'  and name like CONCAT('%',#{materialDto.name},'%')
+    </select>
+
+    <update id="deleteBatchByIds">
+        update 3d_device_supplier set is_deleted = 'y'
+        where is_deleted = 'n'
+        and id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.shining3d.zeus.entity.DeviceSupplierEntity">
+        insert into 3d_device_supplier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.DeviceSupplierEntity">
+        update 3d_device_supplier
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT} and is_deleted = 'n'
+    </update>
+
+    <select id="countDeviceSupplierByCondition" resultType ="java.lang.Integer">
+        select count(*) from 3d_device_supplier where is_deleted = 'n'
+        <if test="name != null">
+           and  name like CONCAT('%',#{name},'%')
+        </if>
+        <if test="id != null">
+            and  id = #{id}
+        </if>
+
+    </select>
+
+    <select id="queryDeviceSupplierByCondition" resultType="com.shining3d.zeus.client.dto.DeviceSupplierDto">
+        select ifnull(count(b.supplier_id),0) as countDevice, a.*  from 3d_device_supplier a
+        LEFT JOIN 3d_device_model b on (a.id = b.supplier_id and b.is_deleted = 'n' and a.is_deleted = 'n')
+        where a.is_deleted = 'n'
+        <if test="deviceSupplierDto.name != null">
+            and a.name  like CONCAT('%',#{deviceSupplierDto.name},'%')
+        </if>
+        <if test="deviceSupplierDto.id != null">
+            and  a.id = #{deviceSupplierDto.id}
+        </if>
+        GROUP BY  a.id
+        <include refid="SHINING3D_COMMON.SHINING3D_ORDER" />
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING" />
+    </select>
+</mapper>

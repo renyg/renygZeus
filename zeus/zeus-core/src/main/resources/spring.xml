@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+    <context:component-scan base-package="com.shining3d" />
+
+    <import resource="spring/spring-bean.xml"/>
+    <import resource="spring/spring-datasource.xml"/>
+    <import resource="spring/spring-disconf.xml"/>
+    <import resource="spring/spring-elastic-job.xml"/>
+    <import resource="spring/spring-dubbo-consumer.xml"/>
+    <import resource="spring/spring-dubbo-provider.xml"/>
+    <import resource="spring/spring-mq.xml"/>
+    <!--<import resource="spring/spring-monitor.xml"/>-->
+</beans>

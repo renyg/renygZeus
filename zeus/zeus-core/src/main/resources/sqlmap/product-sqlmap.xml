@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.ProductDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.entity.ProductEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="data_id" property="dataId" jdbcType="BIGINT"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="data_share_price" property="dataSharePrice" jdbcType="DECIMAL"/>
+        <result column="main_pic_id" property="mainPicId" jdbcType="VARCHAR"/>
+        <result column="pic_file_id" property="picFileId" jdbcType="VARCHAR"/>
+        <result column="category_id" property="categoryId" jdbcType="BIGINT"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="product_type" property="productType" jdbcType="VARCHAR"/>
+        <result column="publish_time" property="publishTime" jdbcType="TIMESTAMP"/>
+        <result column="state" property="state" jdbcType="VARCHAR"/>
+        <result column="online_type" property="onlineType" jdbcType="VARCHAR"/>
+        <result column="online_time" property="onlineTime" jdbcType="TIMESTAMP"/>
+        <result column="offline_type" property="offlineType" jdbcType="VARCHAR"/>
+        <result column="offline_time" property="offlineTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, gmt_create, creator, gmt_modified, modifier, is_deleted, name, data_id, user_id, data_share_price,
+        main_pic_id, pic_file_id, category_id, description, product_type, publish_time, state,
+        online_type, online_time, offline_type, offline_time
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_product
+        where id = #{id,jdbcType=BIGINT} and is_deleted = 'n'
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM 3d_product
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.ProductEntity">
+        INSERT INTO 3d_product (id, gmt_create, creator,
+                                gmt_modified, modifier, is_deleted,
+                                name, data_id, user_id, data_share_price,
+                                main_pic_id, pic_file_id, category_id,
+                                description, product_type, publish_time,
+                                state, online_type, online_time,
+                                offline_type, offline_time)
+        VALUES (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
+                                       #{gmtModified,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
+                                       #{isDeleted,jdbcType=CHAR},
+                                       #{name,jdbcType=VARCHAR}, #{dataId,jdbcType=BIGINT}, #{userId,jdbcType=VARCHAR},
+                                       #{dataSharePrice,jdbcType=DECIMAL},
+                                       #{mainPicId,jdbcType=VARCHAR}, #{picFileId,jdbcType=VARCHAR},
+                                                                      #{categoryId,jdbcType=BIGINT},
+                                                                      #{description,jdbcType=VARCHAR},
+                                                                      #{productType,jdbcType=VARCHAR},
+                                                                      #{publishTime,jdbcType=TIMESTAMP},
+                                                                      #{state,jdbcType=VARCHAR},
+                                                                      #{onlineType,jdbcType=VARCHAR},
+                                                                      #{onlineTime,jdbcType=TIMESTAMP},
+                                                                      #{offlineType,jdbcType=VARCHAR},
+                                                                      #{offlineTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.ProductEntity">
+        insert into 3d_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="dataId != null">
+                data_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="dataSharePrice != null">
+                data_share_price,
+            </if>
+            <if test="mainPicId != null">
+                main_pic_id,
+            </if>
+            <if test="picFileId != null">
+                pic_file_id,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="productType != null">
+                product_type,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="onlineType != null">
+                online_type,
+            </if>
+            <if test="onlineTime != null">
+                online_time,
+            </if>
+            <if test="offlineType != null">
+                offline_type,
+            </if>
+            <if test="offlineTime != null">
+                offline_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                #{dataId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="dataSharePrice != null">
+                #{dataSharePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="mainPicId != null">
+                #{mainPicId,jdbcType=VARCHAR},
+            </if>
+            <if test="picFileId != null">
+                #{picFileId,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="productType != null">
+                #{productType,jdbcType=VARCHAR},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="onlineType != null">
+                #{onlineType,jdbcType=VARCHAR},
+            </if>
+            <if test="onlineTime != null">
+                #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="offlineType != null">
+                #{offlineType,jdbcType=VARCHAR},
+            </if>
+            <if test="offlineTime != null">
+                #{offlineTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.ProductEntity">
+        update 3d_product
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="dataId != null">
+                data_id = #{dataId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="dataSharePrice != null">
+                data_share_price = #{dataSharePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="mainPicId != null">
+                main_pic_id = #{mainPicId,jdbcType=VARCHAR},
+            </if>
+            <if test="picFileId != null">
+                pic_file_id = #{picFileId,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="productType != null">
+                product_type = #{productType,jdbcType=VARCHAR},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="onlineType != null">
+                online_type = #{onlineType,jdbcType=VARCHAR},
+            </if>
+            <if test="onlineTime != null">
+                online_time = #{onlineTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="offlineType != null">
+                offline_type = #{offlineType,jdbcType=VARCHAR},
+            </if>
+            <if test="offlineTime != null">
+                offline_time = #{offlineTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.shining3d.zeus.entity.ProductEntity">
+        UPDATE 3d_product
+        SET gmt_create       = #{gmtCreate,jdbcType=TIMESTAMP},
+            creator          = #{creator,jdbcType=VARCHAR},
+            gmt_modified     = #{gmtModified,jdbcType=TIMESTAMP},
+            modifier         = #{modifier,jdbcType=VARCHAR},
+            is_deleted       = #{isDeleted,jdbcType=CHAR},
+            name             = #{name,jdbcType=VARCHAR},
+            data_id          = #{dataId,jdbcType=BIGINT},
+            user_id          = #{userId,jdbcType=VARCHAR},
+            data_share_price = #{dataSharePrice,jdbcType=DECIMAL},
+            main_pic_id      = #{mainPicId,jdbcType=VARCHAR},
+            pic_file_id      = #{picFileId,jdbcType=VARCHAR},
+            category_id      = #{categoryId,jdbcType=BIGINT},
+            description      = #{description,jdbcType=VARCHAR},
+            product_type     = #{productType,jdbcType=VARCHAR},
+            publish_time     = #{publishTime,jdbcType=TIMESTAMP},
+            state            = #{state,jdbcType=VARCHAR},
+            online_type      = #{onlineType,jdbcType=VARCHAR},
+            online_time      = #{onlineTime,jdbcType=TIMESTAMP},
+            offline_type     = #{offlineType,jdbcType=VARCHAR},
+            offline_time     = #{offlineTime,jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="queryAllProductPageByParam" resultMap="BaseResultMap">
+        select
+        id,
+        gmt_create,
+        creator,
+        gmt_modified,
+        modifier,
+        is_deleted,
+        name,
+        data_id,
+        user_id,
+        data_share_price,
+        main_pic_id,
+        pic_file_id,
+        category_id,
+        description,
+        product_type,
+        publish_time,
+        state,
+        online_type,
+        online_time,
+        offline_type,
+        offline_time
+        from 3d_product
+        where is_deleted = 'n'
+        <if test="paramMap.name !=null and !paramMap.name.equals('')">
+            and name like CONCAT('%',#{paramMap.name},'%')
+        </if>
+        <if test="paramMap.publishBeginTime != null and !paramMap.publishBeginTime.equals('')">
+            and <![CDATA[publish_time >= #{paramMap.publishBeginTime,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="paramMap.publishEndTime != null and !paramMap.publishEndTime.equals('')">
+            and <![CDATA[publish_time <= #{paramMap.publishEndTime,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="paramMap.userId != null and !paramMap.userId.equals('')">
+            and user_id = #{paramMap.userId,jdbcType=BIGINT}
+        </if>
+        <if test="paramMap.state != null and !paramMap.state.equals('')">
+            and state = #{paramMap.state,jdbcType=VARCHAR}
+        </if>
+        <if test="paramMap.categoryIdList != null and paramMap.categoryIdList.size() > 0">
+            and category_id in
+            <foreach collection="paramMap.categoryIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by gmt_modified desc
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING"/>
+    </select>
+
+    <select id="queryAllProductCountByParam" resultType="java.lang.Integer">
+        select
+        count(1)
+        from 3d_product
+        where is_deleted = 'n'
+        <if test="paramMap.name !=null and !paramMap.name.equals('')">
+            and name like CONCAT('%',#{paramMap.name},'%')
+        </if>
+        <if test="paramMap.publishBeginTime != null and !paramMap.publishBeginTime.equals('')">
+            and <![CDATA[publish_time >= #{paramMap.publishBeginTime,jdbcType=TIMESTAMP} ]]>
+        </if>
+        <if test="paramMap.publishEndTime != null and !paramMap.publishEndTime.equals('')">
+            and <![CDATA[publish_time <= #{paramMap.publishEndTime,jdbcType=TIMESTAMP}  ]]>
+        </if>
+        <if test="paramMap.userId != null and !paramMap.userId.equals('')">
+            and user_id = #{paramMap.userId,jdbcType=BIGINT}
+        </if>
+        <if test="paramMap.state != null and !paramMap.state.equals('')">
+            and state = #{paramMap.state,jdbcType=VARCHAR}
+        </if>
+        <if test="paramMap.categoryIdList != null and paramMap.categoryIdList.size() > 0">
+            and category_id in
+            <foreach collection="paramMap.categoryIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+
+    <update id="updateMyDataByParam">
+        update 3d_product
+        set
+        gmt_modified = now()
+        <if test="paramMap.dataSharePrice != null">
+            ,data_share_price = #{paramMap.dataSharePrice,jdbcType=DECIMAL}
+        </if>
+        <if test="paramMap.isDeleted != null">
+            ,is_deleted = #{paramMap.isDeleted,jdbcType=CHAR}
+        </if>
+        where id = #{productId,jdbcType=BIGINT} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+    <insert id="batchSaveProductPackageRelation" parameterType="com.shining3d.zeus.entity.ProductEntity">
+        insert into 3d_product (gmt_create, creator,
+        gmt_modified, modifier, is_deleted,
+        name, data_id, user_id,data_share_price,
+        main_pic_id, pic_file_id, category_id,
+        description, product_type, publish_time,
+        state, online_type, online_time,
+        offline_type, offline_time)
+        values
+        <foreach collection="list" item="item" index="index"
+                 separator=",">
+            (#{item.gmtCreate,jdbcType=TIMESTAMP}, #{item.creator,jdbcType=VARCHAR},
+            #{item.gmtModified,jdbcType=TIMESTAMP}, #{item.modifier,jdbcType=VARCHAR}, #{item.isDeleted,jdbcType=CHAR},
+            #{item.name,jdbcType=VARCHAR}, #{item.dataId,jdbcType=BIGINT},
+            #{item.userId,jdbcType=VARCHAR},#{item.dataSharePrice,jdbcType=DECIMAL},
+            #{item.mainPicId,jdbcType=VARCHAR}, #{item.picFileId,jdbcType=VARCHAR}, #{item.categoryId,jdbcType=BIGINT},
+            #{item.description,jdbcType=VARCHAR}, #{item.productType,jdbcType=VARCHAR},
+            #{item.publishTime,jdbcType=TIMESTAMP},
+            #{item.state,jdbcType=VARCHAR}, #{item.onlineType,jdbcType=VARCHAR}, #{item.onlineTime,jdbcType=TIMESTAMP},
+            #{item.offlineType,jdbcType=VARCHAR}, #{item.offlineTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <select id="queryAllProductByProductIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_product
+        where is_deleted = 'n' and id in
+                 <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                     #{item}
+                 </foreach>
+    </select>
+
+    <select id="queryByDataId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_product
+        where data_id = #{dataId,jdbcType=BIGINT} and is_deleted = 'n'
+    </select>
+
+    <select id="queryCountByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+             count(1)
+        from 3d_product
+        where is_deleted = 'n' and name = #{name,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryAllProductByCategoryIdList" resultMap="BaseResultMap">
+        select
+        id,
+        gmt_create,
+        creator,
+        gmt_modified,
+        modifier,
+        is_deleted,
+        name,
+        data_id,
+        user_id,
+        data_share_price,
+        main_pic_id,
+        pic_file_id,
+        category_id,
+        description,
+        product_type,
+        publish_time,
+        state,
+        online_type,
+        online_time,
+        offline_type,
+        offline_time
+        from 3d_product
+        where is_deleted = 'n'
+              <if test="state != null and !state.equals('')">
+                        and state = #{state,jdbcType=VARCHAR}
+              </if>
+              and category_id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+    </select>
+</mapper>

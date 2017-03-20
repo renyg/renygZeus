@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.DeviceModelDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.client.dto.DeviceModelDto">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT"/>
+        <result column="supplierName" property="supplierName" jdbcType="BIGINT"/>
+        <result column="model_name" property="modelName" jdbcType="VARCHAR"/>
+        <result column="build_size_real" property="buildSizeReal" jdbcType="VARCHAR"/>
+        <result column="build_size_theory" property="buildSizeTheory" jdbcType="VARCHAR"/>
+        <result column="resolution" property="resolution" jdbcType="VARCHAR"/>
+        <result column="layer_thickness" property="layerThickness" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="print_speed" property="printSpeed" jdbcType="VARCHAR"/>
+        <collection property="list" column="marterial_id" ofType="com.shining3d.zeus.client.dto.MaterialParamDto">
+            <result column="precisions" property="precisions" jdbcType="VARCHAR"/>
+            <result column="precisions_name" property="precisionsName" jdbcType="VARCHAR"/>
+            <result column="materialId" property="materialId" jdbcType="BIGINT"/>
+            <result column="materialName" property="materialName" jdbcType="VARCHAR"/>
+            <result column="precisions_ratio" property="precisionsRatio" jdbcType="VARCHAR"/>
+            <result column="precisionsId" property="precisionsId" jdbcType="BIGINT"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, gmt_create, creator, gmt_modified, modifier, is_deleted, type, supplier_id, model_name, 
+    build_size_real, build_size_theory, resolution, layer_thickness,
+    print_speed
+  </sql>
+
+    <update id="batchUpdateModelStatus" parameterType="java.lang.Long">
+        update 3d_device_model set status = #{status}
+        where is_deleted= 'n' and id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <update id="batchDeleteByIds">
+        update 3d_device_model set is_deleted = 'y'
+        where id in
+        <foreach collection="ids" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.DeviceModelEntity">
+        insert into 3d_device_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="modelName != null">
+                model_name,
+            </if>
+            <if test="buildSizeReal != null">
+                build_size_real,
+            </if>
+            <if test="buildSizeTheory != null">
+                build_size_theory,
+            </if>
+            <if test="resolution != null">
+                resolution,
+            </if>
+            <if test="layerThickness != null">
+                layer_thickness,
+            </if>
+            <if test="printSpeed != null">
+                print_speed,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="buildSizeRealX != null">
+                build_size_real_x,
+            </if>
+            <if test="buildSizeRealY != null">
+                build_size_real_y,
+            </if>
+            <if test="buildSizeRealZ != null">
+                build_size_real_z,
+            </if>
+            <if test="precisionRange != null">
+                precision_range,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="modelName != null">
+                #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="buildSizeReal != null">
+                #{buildSizeReal,jdbcType=VARCHAR},
+            </if>
+            <if test="buildSizeTheory != null">
+                #{buildSizeTheory,jdbcType=VARCHAR},
+            </if>
+            <if test="resolution != null">
+                #{resolution,jdbcType=VARCHAR},
+            </if>
+            <if test="layerThickness != null">
+                #{layerThickness,jdbcType=VARCHAR},
+            </if>
+            <if test="printSpeed != null">
+                #{printSpeed,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="buildSizeRealX != null">
+                #{buildSizeRealX},
+            </if>
+            <if test="buildSizeRealY != null">
+                #{buildSizeRealY},
+            </if>
+            <if test="buildSizeRealZ != null">
+                #{buildSizeRealZ},
+            </if>
+            <if test="precisionRange != null">
+                #{precisionRange},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.DeviceModelEntity">
+        update 3d_device_model
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="modelName != null">
+                model_name = #{modelName,jdbcType=VARCHAR},
+            </if>
+            <if test="buildSizeReal != null">
+                build_size_real = #{buildSizeReal,jdbcType=VARCHAR},
+            </if>
+            <if test="buildSizeTheory != null">
+                build_size_theory = #{buildSizeTheory,jdbcType=VARCHAR},
+            </if>
+            <if test="resolution != null">
+                resolution = #{resolution,jdbcType=VARCHAR},
+            </if>
+            <if test="layerThickness != null">
+                layer_thickness = #{layerThickness,jdbcType=VARCHAR},
+            </if>
+            <if test="printSpeed != null">
+                print_speed = #{printSpeed,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="buildSizeRealX != null">
+                build_size_real_x = #{buildSizeRealX},
+            </if>
+            <if test="buildSizeRealY != null">
+                build_size_real_y = #{buildSizeRealY},
+            </if>
+            <if test="buildSizeRealZ != null">
+                build_size_real_z = #{buildSizeRealZ},
+            </if>
+            <if test="precisionRange != null">
+                precision_range = #{precisionRange},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--提供给编辑设备型号使用-->
+    <select id="getCountDeviceModel" resultType="int">
+        select count(*) from (
+        select distinct b.marterial_id as materialId,
+        s.name as supplierName,
+        c.name as materialName,
+        b.precision_id as precisionsId,
+        a.*
+        from 3d_device_model a,
+        3d_model_material_relation b,
+        3d_material c,
+        3d_device_supplier s
+        where a.is_deleted = 'n'
+        and b.is_deleted = 'n'
+        and c.is_deleted = 'n'
+        and s.is_deleted = 'n'
+        and a.supplier_id = s.id
+        and c.id = b.marterial_id
+        and a.id = b.device_id
+        <if test="modelName != null">
+            and a.model_name like CONCAT('%',#{modelName},'%')
+        </if>
+        <if test="supplierId != null">
+            and a.supplier_id like CONCAT('%',#{supplierId},'%')
+        </if>
+        <if test="id != null">
+            and a.id = #{id}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+        ) aa left join 3d_material_precision bb on (aa.precisionsId = bb.id and bb.is_deleted = 'n')
+        where bb.is_deleted = 'n'
+    </select>
+
+    <!--提供给编辑设备型号使用-->
+    <select id="getDeviceModel" resultMap="BaseResultMap">
+        select aa.*,
+        bb.id as precisionsId,
+        bb.precisions_ratio,
+        bb.precisions_name,bb.precisions from (
+        select distinct b.marterial_id as materialId,
+        s.name as supplierName,
+        c.name as materialName,
+        b.precision_id as precisionsId,
+        a.*
+        from 3d_device_model a,
+        3d_model_material_relation b,
+        3d_material c,
+        3d_device_supplier s
+        where a.is_deleted = 'n'
+        and b.is_deleted = 'n'
+        and c.is_deleted = 'n'
+        and s.is_deleted = 'n'
+        and a.supplier_id = s.id
+        and c.id = b.marterial_id
+        and a.id = b.device_id
+        <if test="deviceModelDto.modelName != null">
+            and a.model_name like CONCAT('%',#{deviceModelDto.modelName},'%')
+        </if>
+        <if test="deviceModelDto.supplierId != null">
+            and a.supplier_id = #{deviceModelDto.supplierId}
+        </if>
+        <if test="deviceModelDto.id != null">
+            and a.id = #{deviceModelDto.id}
+        </if>
+        <if test="deviceModelDto.status != null">
+            and a.status = #{deviceModelDto.status}
+        </if>) aa left join 3d_material_precision bb on (aa.precisionsId = bb.id and bb.is_deleted = 'n')
+        where bb.is_deleted = 'n'
+        <include refid="SHINING3D_COMMON.SHINING3D_ORDER"/>
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING"/>
+    </select>
+
+    <!--提供查询设备型号使用 专用!!!!-->
+    <select id="getDeviceModelList" resultType="com.shining3d.zeus.client.dto.DeviceModelDto">
+        select a.*,
+        s.name as supplierName,
+        c.name as materialName
+        from 3d_device_model a,
+        3d_model_material_relation b,
+        3d_material c,
+        3d_device_supplier s
+        where a.is_deleted = 'n'
+        and b.is_deleted = 'n'
+        and c.is_deleted = 'n'
+        and s.is_deleted = 'n'
+        and a.supplier_id = s.id
+        and c.id = b.marterial_id
+        and a.id = b.device_id
+        <if test="deviceModelDto.modelName != null">
+            and a.model_name like CONCAT('%',#{deviceModelDto.modelName},'%')
+        </if>
+        <if test="deviceModelDto.supplierId != null">
+            and a.supplier_id = #{deviceModelDto.supplierId}
+        </if>
+        <if test="deviceModelDto.id != null">
+            and a.id = #{deviceModelDto.id}
+        </if>
+        <if test="deviceModelDto.status != null">
+            and a.status = #{deviceModelDto.status}
+        </if>
+        group by a.id
+        <include refid="SHINING3D_COMMON.SHINING3D_ORDER"/>
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING"/>
+    </select>
+
+    <select id="getCountDeviceModelList" resultType="int">
+       select count(*) from (
+        select a.*
+        from 3d_device_model a,
+        3d_model_material_relation b,
+        3d_material c,
+        3d_device_supplier s
+        where a.is_deleted = 'n'
+        and b.is_deleted = 'n'
+        and c.is_deleted = 'n'
+        and s.is_deleted = 'n'
+        and a.supplier_id = s.id
+        and c.id = b.marterial_id
+        and a.id = b.device_id
+        <if test="deviceModelDto.modelName != null">
+            and a.model_name like CONCAT('%',#{deviceModelDto.modelName},'%')
+        </if>
+        <if test="deviceModelDto.supplierId != null">
+            and a.supplier_id = #{deviceModelDto.supplierId}
+        </if>
+        <if test="deviceModelDto.id != null">
+            and a.id = #{deviceModelDto.id}
+        </if>
+        <if test="deviceModelDto.status != null">
+            and a.status = #{deviceModelDto.status}
+        </if>
+        group by a.id
+        )aa
+    </select>
+
+    <!-- 提供给用户设备添加的列表的信息 -->
+    <select id="getDeviceModelByCondition" resultType="com.shining3d.zeus.client.dto.DeviceModelDto">
+        select
+        group_concat(distinct bb.precisions_name ,":", bb.precisions) as precisionsName,
+        aa.*,
+        bb.name as materialName,
+        bb.name_en as materialNameEn,
+        bb.id as materialId,
+        bb.color,
+        bb.price,
+        bb.starting_price
+        from
+        (
+        select a.*,b.marterial_id,b.precision_id from 3d_device_model a, 3d_model_material_relation b
+        where a.is_deleted = 'n' and b.is_deleted = 'n' and a.id = b.device_id and a.type ='print' and a.status =
+        'enable'
+        <if test="modelName != null">
+            and a.model_name = #{modelName}
+        </if>
+        <if test="supplierId != null">
+            and a.supplier_id =#{supplierId}
+        </if>
+        )aa
+        LEFT JOIN
+        (
+        select m.*,mp.precisions,mp.precisions_name,mp.id as precisionId from 3d_material m LEFT JOIN
+        3d_material_precision mp
+        on(m.id = mp.object_id and mp.is_deleted = 'n' and m.is_deleted = 'n') where m.status = 'enable'
+        ) bb
+        on(bb.precisionId = aa.precision_id and bb.is_deleted = 'n')
+        group by aa.marterial_id
+    </select>
+</mapper>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.CategoryDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.entity.CategoryEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="BIGINT"/>
+        <result column="is_leaf" property="isLeaf" jdbcType="CHAR"/>
+        <result column="sort_no" property="sortNo" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="comments" property="comments" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, gmt_create, creator, gmt_modified, modifier, is_deleted, name, parent_id, is_leaf,
+        sort_no, level, comments, code
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_category
+        where id = #{id,jdbcType=BIGINT} and is_deleted = 'n'
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM 3d_category
+        WHERE id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.shining3d.zeus.entity.CategoryEntity">
+        INSERT INTO 3d_category (id, gmt_create, creator,
+                                 gmt_modified, modifier, is_deleted,
+                                 name, parent_id, is_leaf,
+                                 sort_no, level, comments,
+                                 code)
+        VALUES (#{id,jdbcType=BIGINT}, #{gmtCreate,jdbcType=TIMESTAMP}, #{creator,jdbcType=VARCHAR},
+                                       #{gmtModified,jdbcType=TIMESTAMP}, #{modifier,jdbcType=VARCHAR},
+                                       #{isDeleted,jdbcType=CHAR},
+                                       #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, #{isLeaf,jdbcType=CHAR},
+                                       #{sortNo,jdbcType=INTEGER}, #{level,jdbcType=INTEGER},
+                #{comments,jdbcType=VARCHAR},
+                #{code,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.shining3d.zeus.entity.CategoryEntity">
+        insert into 3d_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="isLeaf != null">
+                is_leaf,
+            </if>
+            <if test="sortNo != null">
+                sort_no,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="comments != null">
+                comments,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="isLeaf != null">
+                #{isLeaf,jdbcType=CHAR},
+            </if>
+            <if test="sortNo != null">
+                #{sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=INTEGER},
+            </if>
+            <if test="comments != null">
+                #{comments,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.CategoryEntity">
+        update 3d_category
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="isLeaf != null">
+                is_leaf = #{isLeaf,jdbcType=CHAR},
+            </if>
+            <if test="sortNo != null">
+                sort_no = #{sortNo,jdbcType=INTEGER},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="comments != null">
+                comments = #{comments,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.shining3d.zeus.entity.CategoryEntity">
+        UPDATE 3d_category
+        SET gmt_create   = #{gmtCreate,jdbcType=TIMESTAMP},
+            creator      = #{creator,jdbcType=VARCHAR},
+            gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            modifier     = #{modifier,jdbcType=VARCHAR},
+            is_deleted   = #{isDeleted,jdbcType=CHAR},
+            name         = #{name,jdbcType=VARCHAR},
+            parent_id    = #{parentId,jdbcType=BIGINT},
+            is_leaf      = #{isLeaf,jdbcType=CHAR},
+            sort_no      = #{sortNo,jdbcType=INTEGER},
+            level        = #{level,jdbcType=INTEGER},
+            comments     = #{comments,jdbcType=VARCHAR},
+            code         = #{code,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="queryByCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_category
+        where code = #{code,jdbcType=VARCHAR} and is_deleted = 'n'
+    </select>
+
+    <select id="queryByCategoryIdList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from 3d_category
+        where  is_deleted = 'n' and id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

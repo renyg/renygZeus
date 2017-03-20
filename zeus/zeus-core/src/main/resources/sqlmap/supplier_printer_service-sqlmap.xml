@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.SupplierPrinterServiceDao">
+
+    <update id="deleteByPK" parameterType="java.lang.Long">
+      update   3d_supplier_printer_service set is_deleted = 'y' where id = #{id,jdbcType=BIGINT} and is_deleted = 'n'
+  </update>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.shining3d.zeus.entity.SupplierPrinterServiceEntity">
+        insert into 3d_supplier_printer_service
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="gmtCreate != null">
+                gmt_create,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+            <if test="supplierId != null">
+                supplier_id,
+            </if>
+            <if test="deviceModelId != null">
+                device_model_id,
+            </if>
+            <if test="deviceAsName != null">
+                device_as_name,
+            </if>
+            <if test="adapterMaterialId != null">
+                adapter_material_id,
+            </if>
+            <if test="precisions != null">
+                precisions,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="color != null">
+                color,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="gmtCreate != null">
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="supplierId != null">
+                #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceModelId != null">
+                #{deviceModelId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceAsName != null">
+                #{deviceAsName,jdbcType=VARCHAR},
+            </if>
+            <if test="adapterMaterialId != null">
+                #{adapterMaterialId,jdbcType=VARCHAR},
+            </if>
+            <if test="precisions != null">
+                #{precisions},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="color != null">
+                #{color},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.shining3d.zeus.entity.SupplierPrinterServiceEntity">
+        update 3d_supplier_printer_service
+        <set>
+            <if test="gmtCreate != null">
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null">
+                creator = #{creator,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier,jdbcType=VARCHAR},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted,jdbcType=CHAR},
+            </if>
+            <if test="supplierId != null">
+                supplier_id = #{supplierId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceModelId != null">
+                device_model_id = #{deviceModelId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceAsName != null">
+                device_as_name = #{deviceAsName,jdbcType=VARCHAR},
+            </if>
+            <if test="adapterMaterialId != null">
+                adapter_material_id = #{adapterMaterialId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="precisions != null">
+                precisions = #{precisions},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="color != null">
+                color = #{color},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT} and is_deleted = 'n'
+    </update>
+
+
+    <select id="getCountByCondition" resultType="int">
+        select count(*) from
+        3d_supplier_printer_service a,
+        3d_device_model b,
+        3d_material c,
+        3d_device_supplier d
+        where a.is_deleted = 'n'
+        and b.is_deleted = 'n'
+        and c.is_deleted = 'n'
+        and d.is_deleted = 'n'
+        and a.supplier_id = d.id
+        and a.device_model_id = b.id
+        and a.adapter_material_id = c.id
+        <if test="userId != null">
+            and a.user_id = #{userId}
+        </if>
+        <if test="supplierId != null">
+            and a.supplier_id = #{supplierId}
+        </if>
+        <if test="modelName != null">
+            and b.model_name = #{modelName}
+        </if>
+        <if test="color != null">
+            and a.color like CONCAT('%',#{color},'%')
+        </if>
+        <if test="precisions != null">
+            and a.precisions like CONCAT('%',#{precisions},'%')
+        </if>
+        <if test="adapterMaterialId != null">
+            and a.adapter_material_id = #{adapterMaterialId}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+        <if test="id != null">
+            and a.id = #{id}
+        </if>
+        <if test="deviceModelId != null">
+            and a.device_model_id = #{deviceModelId}
+        </if>
+    </select>
+
+    <select id="getSupplierPrintServiceByCondition"
+            resultType="com.shining3d.zeus.client.dto.SupplierPrinterServiceDto">
+        select
+        a.*,
+        c.name as adapterMaterialName,
+        c.price,
+        b.build_size_real,
+        b.model_name,
+        b.status as modelStatus,
+        d.name as supplierName
+        from
+        3d_supplier_printer_service a,
+        3d_device_model b,
+        3d_material c,
+        3d_device_supplier d
+        where a.is_deleted = 'n'
+        and b.is_deleted = 'n'
+        and c.is_deleted = 'n'
+        and a.device_model_id = b.id
+        and a.adapter_material_id = c.id
+        and a.supplier_id = d.id
+        <if test="supplierPrinterServiceDto.userId != null">
+            and a.user_id = #{supplierPrinterServiceDto.userId}
+        </if>
+        <if test="supplierPrinterServiceDto.supplierId != null">
+            and a.supplier_id = #{supplierPrinterServiceDto.supplierId}
+        </if>
+        <if test="supplierPrinterServiceDto.modelName != null">
+            and b.model_name = #{supplierPrinterServiceDto.modelName}
+        </if>
+        <if test="supplierPrinterServiceDto.color != null">
+            and a.color like CONCAT('%',#{supplierPrinterServiceDto.color},'%')
+        </if>
+        <if test="supplierPrinterServiceDto.precisions != null">
+            and a.precisions like CONCAT('%',#{supplierPrinterServiceDto.precisions},'%')
+        </if>
+        <if test="supplierPrinterServiceDto.adapterMaterialId != null">
+            and a.adapter_material_id = #{supplierPrinterServiceDto.adapterMaterialId}
+        </if>
+        <if test="supplierPrinterServiceDto.status != null">
+            and a.status = #{supplierPrinterServiceDto.status}
+        </if>
+        <if test="supplierPrinterServiceDto.id != null">
+            and a.id = #{supplierPrinterServiceDto.id}
+        </if>
+        <if test="supplierPrinterServiceDto.deviceModelId != null">
+            and a.device_model_id = #{supplierPrinterServiceDto.deviceModelId}
+        </if>
+        <include refid="SHINING3D_COMMON.SHINING3D_ORDER"/>
+        <include refid="SHINING3D_COMMON.SHINING3D_PAGING"/>
+    </select>
+
+    <!--提供给订单使用查询,使用场景是点击材料和选颜色的时候使用-->
+    <select id="getCanOrderSupplierPrintByCondition"
+            resultType="com.shining3d.zeus.client.dto.SupplierPrinterServiceDto">
+        select ps.*
+        from 3d_supplier_printer_service ps
+        where ps.is_deleted = 'n'
+        and ps.status = 'pass'
+        <if test="adapterMaterialId != null ">
+            and ps.adapter_material_id = #{adapterMaterialId}
+        </if>
+        <if test="color != null">
+            and ps.color like CONCAT('%',#{color},'%')
+        </if>
+    </select>
+
+    <update id="updateStatus" parameterType="com.shining3d.zeus.entity.SupplierPrinterServiceEntity">
+        update 3d_supplier_printer_service
+        <set>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="precisions != null">
+                precisions = #{precisions}
+            </if>
+        </set>
+        where is_deleted = 'n'
+        <if test="userId != null">
+            and user_id = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="adapterMaterialId != null">
+            and adapter_material_id = #{adapterMaterialId}
+        </if>
+    </update>
+
+    <update id="batchUpdateStatus">
+        update 3d_supplier_printer_service
+        <set>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        where is_deleted = 'n' and id in
+        <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

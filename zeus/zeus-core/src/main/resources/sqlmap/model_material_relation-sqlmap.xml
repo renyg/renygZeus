@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shining3d.zeus.dao.ModelMaterialRelationDao">
+    <resultMap id="BaseResultMap" type="com.shining3d.zeus.client.dto.ModelMaterialRelationDto">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+        <result column="modifier" property="modifier" jdbcType="VARCHAR"/>
+        <result column="is_deleted" property="isDeleted" jdbcType="CHAR"/>
+        <result column="device_id" property="deviceId" jdbcType="BIGINT"/>
+        <result column="marterial_id" property="marterialId" jdbcType="BIGINT"/>
+        <result column="precision_id" property="precisionId" jdbcType="BIGINT"/>
+    </resultMap>
+
+
+    <insert id="batchInsert" parameterType="com.shining3d.zeus.entity.ModelMaterialRelationEntity">
+        insert into
+        3d_model_material_relation(gmt_create,creator,gmt_modified,modifier,device_id,marterial_id,precision_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            now(),
+            'sys',
+            now(),
+            'sys',
+            #{item.deviceId},
+            #{item.marterialId},
+            #{item.precisionId}
+            )
+        </foreach>
+
+    </insert>
+
+    <update id="batchUpdate" parameterType="com.shining3d.zeus.entity.ModelMaterialRelationEntity">
+        <foreach collection="entityList" item="item" index="index" separator=";">
+            update 3d_model_material_relation
+            set
+            device_id = #{item.deviceId},
+            marterial_id = #{item.marterialId},
+            precision_id = #{item.precisionId}
+            where id = #{item.id} and is_deleted = 'n'
+        </foreach>
+    </update>
+
+    <update id="batchDeleteByDeviceId">
+        update 3d_model_material_relation set is_deleted = 'y'
+        where is_deleted = 'n' and device_id in
+        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <select id="getMateialRealtionByPrecisionIdAndMaterialId" resultType="com.shining3d.zeus.client.dto.ModelMaterialRelationDto">
+        select * from 3d_model_material_relation
+        where is_deleted = 'n'
+        <if test="precisionId != null">
+            and precision_id = #{precisionId}
+        </if>
+        <if test="marterialId != null">
+            and marterial_id = #{marterialId}
+        </if>
+
+
+    </select>
+</mapper>

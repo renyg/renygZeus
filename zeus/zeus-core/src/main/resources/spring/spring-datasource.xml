@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+           http://www.springframework.org/schema/tx
+           http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" primary="true"
+          destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="${3dkercn.jdbc.url}" />
+        <property name="username" value="${3dkercn.jdbc.username}" />
+        <property name="password" value="${3dkercn.jdbc.password}" />
+        <property name="maxActive" value="30" />
+        <property name="initialSize" value="5" />
+        <property name="minIdle" value="5" />
+        <property name="maxWait" value="6000" />
+        <property name="timeBetweenEvictionRunsMillis" value="600000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="validationQuery" value="SELECT 'x'" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+        <property name="testWhileIdle" value="true" />
+        <property name="filters" value="stat" />
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath:sqlmap/*.xml"/>
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.shining3d.*.dao" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+    </bean>
+
+
+    <bean id="dataSourceTransactionManagerMysql"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManagerMysql" proxy-target-class="true"/>
+    <tx:advice id="defaultTxAdviceMysql" transaction-manager="dataSourceTransactionManagerMysql">
+        <tx:attributes>
+            <tx:method name="*" rollback-for="Exception"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="repository_mysql"
+                      expression="execution(* com.shining3d..repository.*Repository.*(..)) " />
+        <aop:advisor pointcut-ref="repository_mysql" advice-ref="defaultTxAdviceMysql" />
+    </aop:config>
+
+    <bean class="com.shining3d.common.SpringContextUtil"/>
+
+</beans>

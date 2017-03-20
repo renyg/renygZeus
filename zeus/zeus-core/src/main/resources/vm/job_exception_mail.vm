@@ -1,0 +1,13 @@
+<html>
+<body>
+<font color="red">任务调度异常,请尽快处理,么么哒</font>😘😘😘(づ￣ 3￣)づ)</br>
+<font color="red">env :</font>${env}</br>
+<font color="red">ip :</font> ${ip}</br>
+<font color="red">hostName : </font>${hostName}</br>
+<font color="red">jobname :</font>${jobName}</br>
+<font color="red">time :</font>${time}</br>
+<font color="red">exception :</font>${exception}</br>
+😘
+</body>
+</html>
+
